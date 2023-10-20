@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  go-app:
+    container_name: go-app
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - kafka1
+      - kafka2
+    environment:
+      - DATABASE_URL=postgres://seu-usuario:senha@postgres:5432/seu-banco-de-dados
+      - KAFKA_BROKER=kafka1:9092,kafka2:9092
+    links:
+      - postgres
+      - kafka1
+      - kafka2
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: seu-usuario
+      POSTGRES_PASSWORD: senha
+      POSTGRES_DB: seu-banco-de-dados
+    ports:
+      - "5432:5432"
+
+  kafka1:
+    container_name: kafka1
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka1
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_PORT: 9092
+    ports:
+      - "9092:9092"
+
+  kafka2:
+    container_name: kafka2
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka2
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_PORT: 9092
+    ports:
+      - "9093:9092"
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:latest
+    ports:
+      - "9021:9021"
+    depends_on:
+      - kafka1
+      - kafka2
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: "kafka1:9092,kafka2:9092"
