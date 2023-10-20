@@ -1,26 +1,4 @@
-go.api/
-│
-├── application/
-│   ├── usecase.go
-│   └── service.go
-│
-├── cmd/
-│   └── main.go
-│
-├── domain/
-│   └── entity.go
-│
-├── infrastructure/
-│   └── repository.go
-│
-├── interfaces/
-│   ├── api/
-│   │   └── controller.go
-│   │
-│   └── middleware/
-│       └── middleware.go
-
-
+![image](https://github.com/Mateusnasciment/Go.hexagonal/assets/106212780/48feba04-2e8f-4668-bfeb-b41fef6ac37d)
 
 
 To run your application with the provided Docker Compose file, you can follow these steps:
